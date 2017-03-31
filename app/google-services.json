@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "74469693283",
+    "firebase_url": "https://targetequipmentcontrol.firebaseio.com",
+    "project_id": "targetequipmentcontrol",
+    "storage_bucket": "targetequipmentcontrol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74469693283:android:08c69181c1ed68e4",
+        "android_client_info": {
+          "package_name": "com.jrmeza.equipmentcontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74469693283-65n9m6j2ihrg1u07it2ad729bmlijdpf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH_MSPLzyAQQn1MO9dz3q10OVAMG3OZlg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
