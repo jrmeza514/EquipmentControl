@@ -1,16 +1,22 @@
 package com.jrmeza.equipmentcontrol;
 
-import android.app.DownloadManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,48 +28,107 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.Reference;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
-    private final int REQUEST_ENABLE_BT = 1;
     public static final String SCANNER_UUID_1 = "00001101-0000-1000-8000-00805F9B34FB";
-    public static final String SCANNER_UUID_2 = "00000000-0000-1000-8000-00805F9B34FB";
     public static final String SCANNER_NAME = "CT1016926047";
     public static final String MAC_ADDRESS = "00:06:72:49:06:61";
     /* DB Constants */
-    public static final String TARGET_EQUIPMENT_CONTROL = "targetequipmentcontrol";
     public static final String EQUIPMENT_DB = "Equipment";
-    public static final String RECORDS_DB = "Records";
-
-
-
+    /*Constants*/
+    private final int REQUEST_ENABLE_BT = 1;
+    /* UI Variable Declarations */
     private TextView barcodeLabel;
     private TextView statusLabel;
+    private TextView activeTMLabel;
+    private TextView dateTimeLabel;
+    private TextView scannerStatusLabel;
     private Button checkOutBtn;
     private Button checkInBtn;
-    private ConnectThread connectThread;
+    private Button clearBtn;
+    private Toolbar mToolbar;
 
-    private HashMap<String, String>  EquipmentIdMap = new HashMap<String, String>();
+    /* Logic Variables */
+    private String referenceCode;
+    /* Click Listener for the Clear Button*/
+    public View.OnClickListener clearClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            clearAll();
+        }
+    };
+    private ScannerState scannerState;
+
+    /* Utitlity Variables */
+    private Timer mTimer;
+    private ConnectThread connectThread;
+    private FirebaseDatabase database;
+    /* Click Listener for the Checkout Button */
+    public View.OnClickListener checkoutClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkout();
+        }
+    };
+    /* Click Listener for the CheckIn Button */
+    public View.OnClickListener checkInClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkIn();
+        }
+    };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_bar_master_view:
+                Intent intent = new Intent(this, MasterView.class);
+                startActivity(intent);
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference targetEquipmentControl = database.getReference();
-        DatabaseReference equipmentRef = targetEquipmentControl.child(EQUIPMENT_DB);
-        DatabaseReference recordsRef = database.getReference(RECORDS_DB);
-        Log.d("JRM", equipmentRef.getParent().getKey());
+
+        mToolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(mToolbar);
+
+        /* Initialize UI Variables */
         barcodeLabel = (TextView) findViewById(R.id.barcodeLabel);
         statusLabel = (TextView) findViewById(R.id.equipmentStatusLabel);
+        dateTimeLabel = (TextView) findViewById(R.id.dateTimeLabel);
+        scannerStatusLabel = (TextView) findViewById(R.id.scannerStatusLabel);
         checkOutBtn = (Button) findViewById(R.id.check_out_btn);
         checkInBtn = (Button) findViewById(R.id.check_in_btn);
+        clearBtn = (Button) findViewById(R.id.clear_btn);
+        activeTMLabel = (TextView) findViewById(R.id.activeTeamMemberLabel);
+
+
+
+        /*Set Click Listeners*/
+        checkInBtn.setOnClickListener(checkInClickListener);
+        checkOutBtn.setOnClickListener(checkoutClickListener);
+        clearBtn.setOnClickListener(clearClickListener);
 
         /* Check for bluetooth Support */
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -77,35 +142,9 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
         }
 
-        connectThread = new ConnectThread(this);
-        DatabaseReference PDA = equipmentRef.child("PDA-2605-001");
-        DatabaseReference Status = PDA.child("status");
-        Log.d("JRM", Status.toString());
-        Status.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int value = dataSnapshot.getValue(Integer.class);
-                Log.d("JRM", "Value is: " + value);
-                switch (value){
-                    case 0:
-                        statusLabel.setText("Available");
-                        break;
-                    case 1:
-                        statusLabel.setText("Unavailable");
-                        break;
-                    case 2:
-                        statusLabel.setText("Out for Repair");
-                        break;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("JRM", "Failed to read value.", databaseError.toException());
-            }
-        });
+        database = FirebaseDatabase.getInstance();
+        scannerState = ScannerState.DISCONNECTED;
     }
-
 
     public void onDestroy() {
         super.onDestroy();
@@ -113,32 +152,244 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
+        /* Start the connection Thread for the BluetoothScanner */
+        connectThread = new ConnectThread(this);
+        mTimer = new Timer();
+        /*Check the connection every 2.5s */
+        mTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+
+                switch (scannerState) {
+                    case CONNECTED:
+                        Log.d("ASS", "Scanner Already Connected");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                scannerStatusLabel.setText("Connected");
+                            }
+                        });
+                        break;
+                    case DISCONNECTED:
+                        scannerState = ScannerState.CONNECTING;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                scannerStatusLabel.setText("Searching");
+                            }
+                        });
+                        if (connectThread != null && connectThread.mBluetoothSocket != null && connectThread.mBluetoothSocket.isConnected()) {
+                            scannerState = ScannerState.CONNECTED;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scannerStatusLabel.setText("Connected");
+                                }
+                            });
+                        } else {
+                            connectThread = new ConnectThread(getApplicationContext());
+                            connectThread.start();
+                            Log.d("ASS", "Attempting to Connect");
+                        }
+                        break;
+                    case CONNECTING:
+
+                        break;
+                }
+            }
+        }, 0, 2500);
         connectThread.start();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        connectThread.cancel();
+        if (connectThread != null) {
+            connectThread.cancel();
+        }
     }
 
-    public void handlerScan(final Context context, final String message){
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (connectThread != null) {
+            connectThread.cancel();
+            connectThread = null;
+        }
+        mTimer.cancel();
+    }
+
+    /* Handle the Data Received from the Scanner */
+    public void handlerScan(final Context context, final String equipmentId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String equipmentName = EquipmentIdMap.get(message);
-                if (equipmentName == null){
-                    barcodeLabel.setText(message + "!");
-                }else{
-                    barcodeLabel.setText("Equipment ID: " + equipmentName);
-                    statusLabel.setText("Status: Available");
-                    checkOutBtn.setEnabled(true);
-                }
+                /* Clear the UI */
+                clearAll();
+                /* Set Reference Code */
+                referenceCode = equipmentId;
+
+                /* Obtain the Database Reference */
+                DatabaseReference dbref = database.getReference(EQUIPMENT_DB);
+                /* Fetch the Data */
+                dbref.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        /* Obtain Equipment Object */
+                        Equipment equipment = dataSnapshot.getValue(Equipment.class);
+
+                        /*  Return the function Call if the Data is Invalid */
+                        if (equipment == null) return;
+
+                        /*  Set equipmentID Label */
+                        barcodeLabel.setText(equipment.alias);
+
+                        /*  Change Status-Dependent UI */
+                        switch (equipment.status) {
+                            /* The Equipment Is Available */
+                            case 0:
+                                statusLabel.setText("Available");
+                                activeTMLabel.setText("");
+                                checkOutBtn.setEnabled(true);
+                                checkInBtn.setEnabled(false);
+                                break;
+
+                            /* The Equipment is Unavailable*/
+                            case 1:
+                                statusLabel.setText("Unavailable");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a MM/dd/yyyy");
+                                dateTimeLabel.setText(dateFormat.format(equipment.lastTransaction.timestamp));
+                                activeTMLabel.setText(equipment.activeTM);
+                                checkOutBtn.setEnabled(false);
+                                checkInBtn.setEnabled(true);
+                                break;
+
+                            /* The Equipment is Out For Repair */
+                            case 2:
+                                statusLabel.setText("Out for Repair");
+                                activeTMLabel.setText("");
+                                checkOutBtn.setEnabled(false);
+                                checkInBtn.setEnabled(false);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
             }
         });
     }
 
+    /* Check Out the Last Scanned Item */
+    public void checkout() {
+
+        /*
+            Create a Dialog to prompt for the user's name
+         */
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setMaxLines(1);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Check Out Equipment")
+                .setMessage("Please Enter Your Name:")
+                .setView(input);
+
+        /* Set Positive Action Listener */
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /* Obtain Database References*/
+                final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB);
+                final DatabaseReference ref = equipmentRef.child(referenceCode);
+
+                /* Read and Modify Data */
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        /* Get Equipment Object */
+                        final Equipment equipment = dataSnapshot.getValue(Equipment.class);
+
+                        /* Set the Active TM and Transaction Time*/
+                        equipmentRef.child(referenceCode).setValue(new Equipment(1, input.getText().toString(), equipment.alias, new Equipment.LastTransaction(
+                                new Date().getTime(),
+                                input.getText().toString()
+                        )));
+
+                        /* Acknowledge the Transaction with a Toast */
+                        Toast.makeText(getApplicationContext(), "Checked Out " + referenceCode, Toast.LENGTH_LONG).show();
+                        /* Clear the UI */
+                        clearAll();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+        builder.show();
+    }
+
+    /* CheckIn the Last Scanned Item */
+    public void checkIn() {
+        /* Obtain the database reference for the equipment*/
+        final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB);
+        final DatabaseReference ref = equipmentRef.child(referenceCode);
+
+        /* Read and Modify the Data */
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                /* Get the Equipment Object */
+                Equipment equipment = dataSnapshot.getValue(Equipment.class);
+                /* Get the Active TM */
+                String name = equipment.activeTM.toString();
+
+                /* Remove Active TM */
+                equipmentRef.child(referenceCode).setValue(new Equipment(0, "none", equipment.alias, new Equipment.LastTransaction(
+                        new Date().getTime(),
+                        name
+                )));
+                /* Make a toast to Acknowledge the Transaction  */
+                Toast.makeText(getApplicationContext(), "Checked In " + referenceCode, Toast.LENGTH_LONG).show();
+                /* Clear the UI */
+                clearAll();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Unable to Complete Transaction", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /* Reset Every UI Element To Clear Any Data */
+    public void clearAll() {
+        referenceCode = null;
+        barcodeLabel.setText("");
+        statusLabel.setText("");
+        activeTMLabel.setText("");
+        dateTimeLabel.setText("");
+        checkInBtn.setEnabled(false);
+        checkOutBtn.setEnabled(false);
+        dateTimeLabel.setText("");
+    }
+
+    private enum ScannerState {
+        CONNECTED,
+        CONNECTING,
+        DISCONNECTED
+    }
 
     public class ConnectThread extends Thread {
         private BluetoothSocket mBluetoothSocket;
@@ -167,7 +418,15 @@ public class MainActivity extends AppCompatActivity {
 
             // Make sure we have a device
             if (mBluetoothDevice == null){
-                Toast.makeText(mContext, "No Such Device", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "No Such Device", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "No Such Device", Toast.LENGTH_SHORT).show();
+                        scannerStatusLabel.setText("Disconnected");
+                    }
+                });
+                scannerState = ScannerState.DISCONNECTED;
                 return;
             }
 
@@ -176,15 +435,20 @@ public class MainActivity extends AppCompatActivity {
             try{
                 tmp = mBluetoothDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(MainActivity.SCANNER_UUID_1));
             }
-            catch (IOException ioexception){
-                Log.e("Error", "Socket's create() method failed", ioexception);
-            }
             catch (Exception e ){
+                scannerState = ScannerState.DISCONNECTED;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scannerStatusLabel.setText("Disconnected");
+                    }
+                });
                 e.printStackTrace();
+                return;
             }
 
+
             mBluetoothSocket = tmp;
-            //
             //Disable Discovery
             mBluetoothAdapter.cancelDiscovery();
 
@@ -192,13 +456,20 @@ public class MainActivity extends AppCompatActivity {
                 // Connect to the remote device through the socket. This call blocks
                 // until it succeeds or throws an exception.
                 mBluetoothSocket.connect();
+                scannerState = ScannerState.CONNECTED;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scannerStatusLabel.setText("Connected");
+                    }
+                });
                 InputStream stream = mBluetoothSocket.getInputStream();
                 Log.d("JRM", "Connected to: " + mBluetoothDevice.getName());
-
                 int numBytes = 0;
                 byte[] buffer = new byte[1024];
 
                 while (true){
+                    scannerState = ScannerState.CONNECTED;
                     numBytes = stream.read(buffer);
                     String message = new String(buffer, 0 , numBytes - 1  );
                     for (char character : message.toCharArray()){
@@ -207,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
                     handlerScan(mContext, message);
                     Log.d("JRM", "Message Received: " + message + "!");
                 }
+
 
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and return.
@@ -217,6 +489,13 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException closeException) {
                     Log.e("Error", "Could not close the client socket", closeException);
                 }
+                scannerState = ScannerState.DISCONNECTED;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scannerStatusLabel.setText("Disconnected");
+                    }
+                });
                 return;
             }
 
@@ -225,11 +504,20 @@ public class MainActivity extends AppCompatActivity {
 
         public void cancel() {
             try {
+                scannerState = ScannerState.DISCONNECTED;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scannerStatusLabel.setText("Disconnected");
+                    }
+                });
                 mBluetoothSocket.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e("Error", "Could not close the client socket", e);
             }
         }
     }
+
+
 }
 

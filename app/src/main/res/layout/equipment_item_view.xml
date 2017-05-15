@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp">
+
+    <TextView
+        android:id="@+id/equipment_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:text="Equipment Name" />
+
+    <TextView
+        android:id="@+id/equipment_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/equipment_name"
+        android:layout_marginStart="98dp"
+        android:layout_toEndOf="@+id/last_known_tm_label"
+        android:text="Equipment Status" />
+
+    <TextView
+        android:id="@+id/last_known_tm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/equipment_name"
+        android:layout_marginTop="11dp"
+        android:text="Last Known Team Member" />
+
+    <TextView
+        android:id="@+id/equipment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/equipment_name_label"
+        android:text="Equipment Name"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+
+    <TextView
+        android:id="@+id/equipment_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/equipment_status_label"
+        android:layout_below="@+id/equipment_status_label"
+        android:text="Status"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+
+    <TextView
+        android:id="@+id/last_known_tm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/last_known_tm_label"
+        android:text="Team Member"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+
+    <TextView
+        android:id="@+id/last_interaction_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/last_interaction_time_label"
+        android:layout_below="@+id/last_interaction_time_label"
+        android:text="10:05 AM 10/21/1995"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
+
+    <TextView
+        android:id="@+id/last_interaction_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/last_known_tm_label"
+        android:layout_alignBottom="@+id/last_known_tm_label"
+        android:layout_alignStart="@+id/equipment_status"
+        android:text="Last Interaction Time" />
+
+</RelativeLayout>
