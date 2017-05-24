@@ -1,15 +1,18 @@
 package com.jrmeza.equipmentcontrol;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,31 +22,48 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class MasterView extends AppCompatActivity {
-
     private Toolbar mToolbar;
     private FirebaseDatabase mFirebase;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+    private EditText searchBar;
+    TextWatcher searchTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateRecyclerView();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_view);
 
-
+        searchBar = (EditText) findViewById(R.id.search_bar);
         mToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.master_list);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(new EquipmentAdapter(new Equipment[]{}));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFirebase = FirebaseDatabase.getInstance();
-        DatabaseReference equipmentDatabase = mFirebase.getReference(MainActivity.EQUIPMENT_DB);
+        DatabaseReference equipmentDatabase =
+                mFirebase.getReference(MainActivity.EQUIPMENT_DB).child(MainActivity.STORE_ID);
         equipmentDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,6 +91,7 @@ public class MasterView extends AppCompatActivity {
         });
 
 
+        searchBar.addTextChangedListener(searchTextWatcher);
     }
 
     @Override
@@ -78,12 +99,53 @@ public class MasterView extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateRecyclerView() {
+        DatabaseReference equipmentDatabase =
+                mFirebase.getReference(MainActivity.EQUIPMENT_DB).child(MainActivity.STORE_ID);
+
+        equipmentDatabase.orderByKey().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> parent = dataSnapshot.getChildren();
+                int size = 0;
+                for (DataSnapshot child : parent) {
+                    size++;
+                }
+                Equipment[] equipmentList = new Equipment[size];
+                int counter = 0;
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Equipment equipment = child.getValue(Equipment.class);
+                    equipmentList[counter] = equipment;
+                    counter++;
+                }
+                ArrayList<Equipment> equipmentArrayList = new ArrayList<Equipment>();
+                for (Equipment equipment : equipmentList) {
+                    if (equipment.alias.toLowerCase().replace("#", "")
+                            .contains(searchBar.getText().toString().toLowerCase().replace("#", ""))) {
+                        equipmentArrayList.add(equipment);
+                    }
+                }
+
+                EquipmentAdapter equipmentAdapter =
+                        new EquipmentAdapter(equipmentArrayList.toArray(new Equipment[equipmentArrayList.size()]));
+                mRecyclerView.setAdapter(equipmentAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public class EquipmentAdapter extends RecyclerView.Adapter<EquipmentAdapter.ViewHolder> {

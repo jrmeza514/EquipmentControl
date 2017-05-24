@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MAC_ADDRESS = "00:06:72:49:06:61";
     /* DB Constants */
     public static final String EQUIPMENT_DB = "Equipment";
+    public static final String STORE_ID = "T-2605";
     /*Constants*/
     private final int REQUEST_ENABLE_BT = 1;
     /* UI Variable Declarations */
@@ -95,8 +96,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_bar_master_view:
+                if (connectThread != null) {
+                    connectThread.cancel();
+                }
+                scannerState = ScannerState.DISCONNECTED;
+                connectThread = null;
+                mTimer.cancel();
+
                 Intent intent = new Intent(this, MasterView.class);
                 startActivity(intent);
+                finish();
+
                 break;
 
             default:
@@ -140,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mBluetoothAdapter.isEnabled()){
             Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
+
         }
 
         database = FirebaseDatabase.getInstance();
@@ -187,6 +198,14 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
+                            if (connectThread != null && connectThread.mBluetoothSocket != null && connectThread.mBluetoothSocket.isConnected()) {
+                                try {
+                                    connectThread.mBluetoothSocket.close();
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             connectThread = new ConnectThread(getApplicationContext());
                             connectThread.start();
                             Log.d("ASS", "Attempting to Connect");
@@ -207,6 +226,9 @@ public class MainActivity extends AppCompatActivity {
         if (connectThread != null) {
             connectThread.cancel();
         }
+        scannerState = ScannerState.DISCONNECTED;
+        connectThread = null;
+        mTimer.cancel();
     }
 
     @Override
@@ -214,8 +236,9 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if (connectThread != null) {
             connectThread.cancel();
-            connectThread = null;
         }
+        scannerState = ScannerState.DISCONNECTED;
+        connectThread = null;
         mTimer.cancel();
     }
 
@@ -230,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 referenceCode = equipmentId;
 
                 /* Obtain the Database Reference */
-                DatabaseReference dbref = database.getReference(EQUIPMENT_DB);
+                DatabaseReference dbref = database.getReference(EQUIPMENT_DB).child(STORE_ID);
                 /* Fetch the Data */
                 dbref.child(equipmentId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -305,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 /* Obtain Database References*/
-                final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB);
+                final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB).child(STORE_ID);
                 final DatabaseReference ref = equipmentRef.child(referenceCode);
 
                 /* Read and Modify Data */
@@ -343,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
     /* CheckIn the Last Scanned Item */
     public void checkIn() {
         /* Obtain the database reference for the equipment*/
-        final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB);
+        final DatabaseReference equipmentRef = database.getReference(EQUIPMENT_DB).child(STORE_ID);
         final DatabaseReference ref = equipmentRef.child(referenceCode);
 
         /* Read and Modify the Data */
@@ -406,7 +429,6 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             super.run();
 
-
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
             for (BluetoothDevice bluetoothDevice : pairedDevices){
                 if (bluetoothDevice.getName().equals(SCANNER_NAME) || bluetoothDevice.getAddress().equals(MAC_ADDRESS)){
@@ -414,7 +436,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             }
-
 
             // Make sure we have a device
             if (mBluetoothDevice == null){
@@ -504,6 +525,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void cancel() {
             try {
+                mBluetoothSocket.close();
                 scannerState = ScannerState.DISCONNECTED;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -511,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
                         scannerStatusLabel.setText("Disconnected");
                     }
                 });
-                mBluetoothSocket.close();
+
             } catch (Exception e) {
                 Log.e("Error", "Could not close the client socket", e);
             }
