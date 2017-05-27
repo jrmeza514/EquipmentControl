@@ -82,6 +82,8 @@ public class MasterView extends AppCompatActivity {
 
                 EquipmentAdapter equipmentAdapter = new EquipmentAdapter(equipmentList);
                 mRecyclerView.setAdapter(equipmentAdapter);
+
+                updateRecyclerView();
             }
 
             @Override

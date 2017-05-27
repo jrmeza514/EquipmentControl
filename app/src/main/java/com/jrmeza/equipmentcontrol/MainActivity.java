@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     /* UI Variable Declarations */
     private TextView barcodeLabel;
     private TextView statusLabel;
+
+
     private TextView activeTMLabel;
     private TextView dateTimeLabel;
     private TextView scannerStatusLabel;
@@ -103,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 connectThread = null;
                 mTimer.cancel();
 
-                Intent intent = new Intent(this, MasterView.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(this, MasterView.class);
+//                startActivity(intent);
+//                finish();
 
                 break;
 
@@ -170,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
                 switch (scannerState) {
                     case CONNECTED:
                         Log.d("ASS", "Scanner Already Connected");
