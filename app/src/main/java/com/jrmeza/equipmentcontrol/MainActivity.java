@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 connectThread = null;
                 mTimer.cancel();
 
-//                Intent intent = new Intent(this, MasterView.class);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(this, MasterControl.class);
+                startActivity(intent);
+                finish();
 
                 break;
 
