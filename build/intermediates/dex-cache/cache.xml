@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_137d2fd5efbe98d1a7700482b58f739381c4f0f3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-24.2.1_0105a69671fa58a4fefc441888b164e2ff4fb423/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="a1aa1dd9917e887bfe732cc5e561ae6ae8f9a84a">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-common-10.2.1_87dfb9c3b5d418ae2a37985b34f35e08db4133c1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="c698ff72be9b5bde6208bdb0fdcb5b2bfe032e2d">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_f8beda89d5e8f5219ec141d974880f2a2d2acb46/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="6003d64df88a6ce5e961fa2bad7f1b9b97689ac1">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-tasks-10.2.1_d1598f3894e304f75dbde1904813fd61118eae00/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="888983f51cf34f57a93ff16832552f2f15937212">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-impl-10.2.1_6846f5fc36a600a9cbcd5bce9feca560f0b9f9d5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-24.2.1_e407ca9d511b92d54c618717bc98ec76d1934b7b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_e9544d467b779134515f54bce9736d3d54694810/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_62fd7276ebc1c2f2ec1ea30adec2838ce483d430/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="d0a843615f3b5fa3a080497709f5436696149a09">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-database-10.2.1_e5e19ea7260a6059f4d3ad76e7209c5e2978b9be/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.2.1_410a17a83711032430ba766367cbd9110cbeac16/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.1/support-annotations-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.2.1_24eb946fc235836dff392eae573d70ff82d37fc3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-24.2.1_ba3bbda47c7122e257347b46291c78e8c7b2602b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_2e28219256b21b2905f75542a77bed5ad2d428c4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_74bada8166101b3c8ad3674d53d4817ec0551d2c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-24.2.1_e42a7774ec03cfc7e3b8baf584566f597ed27e23/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.akexorcist/bluetoothspp/1.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="a77138ac5211331e9579024c12bedabe3c835260">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.akexorcist-bluetoothspp-1.0.0_09008d3fda7dc557439437b429934f0e9724996c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/design/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-24.2.1_31f19cfd0c70756c78e147809140fdaa27c0aedb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="cfa03bf4246d77ba2bd3cac33797a9ef746015fa">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_eaa0ae2dea8de93d73accae43da46cf306969b48/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database-connection/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="2a7ffe939ffd830b5d4052f3c1c4c235923790ce">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-database-connection-10.2.1_7a887ad9483191a6708752fb43883eae98699368/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-24.2.1_dae3e41e30dbb809b9ba0e97debc0e3039f51204/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-24.2.1_b136256455a686eab3a4b916b56b49e6f9346691/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="0a5d5553c308643a9022f15513ebdd59e9c78d82">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-10.2.1_141a6428c6a454d76f5ae1c202d0fb607cba750b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-24.2.1_b67d3fc29f0bfabc8a79b0d038a0a2baffb834af/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="bdcc2a9572f18b8c90a3a157cab6cdfc97c6c736">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-10.2.1_c09a658efd948bfd36298ad1e27be756a9208eeb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_3cc5f8d5fdea6df1a1760ea786ce099fd50216a4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/10.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="399f75732ff1ac159f9e73611536f1508bf18d3b">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-iid-10.2.1_aa9c8afd0da648e2080dd8cdd6b7cd79bc54fb98/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/juanmeza/Projects/EquipmentControl/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-24.2.1_bb8543c6be11d5d313042f7620dbb8ab9a4ffbe4/classes.dex" />
+    </item>
+
+</items>
